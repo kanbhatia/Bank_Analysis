@@ -4,6 +4,7 @@ import os, csv
 #Variables
 Candidates = {}
 Total_votes = 0
+winner = 0
 #Create a path for the csv file
 csvpath = os.path.join(".", "election_data.csv")
 
@@ -20,9 +21,29 @@ with open (csvpath, newline ="") as csvfile:
             Total_votes +=1
     
     #print output
-    print ("Election Results\n ---------------------")
-    print ("Total Votes" + str(Total_votes) + "---------------------")
+    print ("Election Results\n---------------------")
+    print ("Total Votes: " + str(Total_votes) + "\n---------------------")
 
     for i in range(len(Candidates)):
-        print (f"{list(Candidates.keys())[i]}: {round(((list(Candidates.values())[i])*100/Total_votes),2)}% ({list(Candidates.values())[i]})")
-        
+        print (f"{list(Candidates.keys())[i]}: {round(((list(Candidates.values())[i])*100/Total_votes),3)}% ({list(Candidates.values())[i]})")
+     
+        if (Candidates[f"{list(Candidates.keys())[i]}"] >winner):
+            winner = Candidates[f"{list(Candidates.keys())[i]}"]
+            winner_name  = list(Candidates.keys())[i]
+    print ("---------------------")
+    print (f"Winner: {winner_name}")
+    print ("---------------------")
+
+    #create file
+    txtfile = open("election_output.txt","w")
+    txtfile.write ("Election Results\n---------------------\n")
+    txtfile.write ("Total Votes: " + str(Total_votes) + "\n---------------------\n")
+
+    for i in range(len(Candidates)):
+        txtfile.write (f"{list(Candidates.keys())[i]}: {round(((list(Candidates.values())[i])*100/Total_votes),3)}% ({list(Candidates.values())[i]})\n")
+ 
+    txtfile.write ("---------------------\n")
+    txtfile.write (f"Winner: {winner_name}\n")
+    txtfile.write ("---------------------\n")
+    #Close file
+    txtfile.close()
